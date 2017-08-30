@@ -53,40 +53,37 @@ def  clearNoise(image,G,N,Z):
                 if  color !=  None :  
                     draw.point((x,y),color)  
 
-                  
+# Enhance
+def enhance(image):
+  enhancer = ImageEnhance.Contrast(image)
+  image = enhancer.enhance(3.0)
+  enhancer = ImageEnhance.Brightness(image)
+  image = enhancer.enhance(10.0)
+  return image
   
 #測試代碼  
 def  main():  
     #打開圖片  
-    image = Image.open( "./pic/ImageCode5.gif" )  
+    image = Image.open( "./pic/ImageCode1.gif" )  
   
     #將圖片轉換成灰度圖片  
     image = image.convert( "L" )  
 
-    #Enhance
-    enhancer = ImageEnhance.Contrast(image)
-    image = enhancer.enhance(3.0)
-    enhancer = ImageEnhance.Brightness(image)
-    image = enhancer.enhance(10.0)
+    #第一次 Enhance
+    image = enhance(image)
   
-    #去噪,G = 50,N = 4,Z = 4  
+    #第一次去噪,G = 50,N = 4,Z = 4  
     clearNoise(image, 50 , 3 , 3 )  
   
-    #保存圖片  
-    # image.save( "./result.png" )  
 
-    # im = Image.open('result.png')
-
-    #
-    enhancer = ImageEnhance.Contrast(image)
-    image = enhancer.enhance(3.0)
-    enhancer = ImageEnhance.Brightness(image)
-    image = enhancer.enhance(10.0)
+    #第二次 Enhance
+    image = enhance(image)
   
-    #去噪,G = 50,N = 4,Z = 4  
+    #第二次去噪,G = 50,N = 4,Z = 4  
     clearNoise(image, 50 , 4 , 4 )  
   
-
+    #保存圖片  
+    # image.save( "./result/result.png" )  
 
     image.show()
     print(pytesseract.image_to_string(image))
